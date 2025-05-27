@@ -1,0 +1,7 @@
+bin/
+obj/
+gcov_report/
+.vscode/
+
+*.a
+*.o
