@@ -1,6 +1,7 @@
 #include "matrix_t/matrix_t_test_helpers.h"
 
 #include <check.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -85,4 +86,11 @@ void s21_ck_assert_matrix_eq(const matrix_t *expected, const matrix_t *actual) {
 int s21_two_doubles_equals_with_tolerance(double first, double second,
                                           double tolerance) {
   return fabs(first - second) <= tolerance;
+}
+
+void s21_print_matrix_with_message(const char *message,
+                                   const matrix_t *matrix) {
+  printf("%s\n", message);
+  printf("[%dx%d]\n", matrix->rows, matrix->columns);
+  s21_print_matrix(matrix);
 }

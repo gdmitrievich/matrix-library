@@ -29,4 +29,6 @@ int s21_two_doubles_equals_with_tolerance(double first, double second,
 
 void s21_print_matrix_with_message(const char *message, const matrix_t *matrix);
 
+void s21_print_matrix(const matrix_t *matrix);
+
 #endif  // MATRIX_T_TEST_HELPERS_H
