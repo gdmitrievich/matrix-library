@@ -47,7 +47,7 @@ $(BIN_DIR)/%$(TEST_PREFIX): $(OBJ_DIR)/%$(TEST_PREFIX).o $(TEST_HELPER_OBJS) $(T
 
 $(OBJ_DIR)/%.o: $(TEST_DIR)/%.c
 	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) -I$(TEST_DIR) -c $< -o $@
+	$(CC) $(CFLAGS) -I$(TEST_DIR) -I$(SRC_DIR) -c $< -o $@
 
 # Generates code coverage report as html page and opens it.
 gcov_report: CFLAGS += --coverage
