@@ -94,3 +94,14 @@ void s21_print_matrix_with_message(const char *message,
   printf("[%dx%d]\n", matrix->rows, matrix->columns);
   s21_print_matrix(matrix);
 }
+
+void s21_print_matrix(const matrix_t *matrix) {
+  for (int i = 0; i < matrix->rows; ++i) {
+    for (int j = 0; j < matrix->columns; ++j) {
+      printf("%f ", matrix->matrix[i][j]);
+      if (j + 1 == matrix->columns) {
+        printf("\n");
+      }
+    }
+  }
+}
