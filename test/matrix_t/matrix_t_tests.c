@@ -95,6 +95,31 @@ START_TEST(cm_matrix_is_too_big_returns_1) {
 }
 END_TEST
 
+START_TEST(rm_matrix_is_null) { s21_remove_matrix(NULL); }
+END_TEST
+
+START_TEST(rm_1by1_square_matrix) {
+  matrix_t expected_matrix = EMPTY_MATRIX_T;
+  matrix_t actual_matrix = EMPTY_MATRIX_T;
+  s21_init_matrix(1, 1, "5.5", &actual_matrix);
+
+  s21_remove_matrix(&actual_matrix);
+
+  s21_ck_assert_matrix_eq(&expected_matrix, &actual_matrix);
+}
+END_TEST
+
+START_TEST(rm_2by4_matrix) {
+  matrix_t expected_matrix = EMPTY_MATRIX_T;
+  matrix_t actual_matrix = EMPTY_MATRIX_T;
+  s21_init_matrix(2, 4, "1 2 3 4 5 6 7 8", &actual_matrix);
+
+  s21_remove_matrix(&actual_matrix);
+
+  s21_ck_assert_matrix_eq(&expected_matrix, &actual_matrix);
+}
+END_TEST
+
 Suite *base_suite(void) {
   Suite *s_b = suite_create("Base");
 
@@ -108,6 +133,12 @@ Suite *base_suite(void) {
   tcase_add_test(tc_cm, cm_3by3_square_matrix_returns_0);
   tcase_add_test(tc_cm, cm_matrix_is_too_big_returns_1);
   suite_add_tcase(s_b, tc_cm);
+
+  TCase *tc_rm = tcase_create("s21_remove_matrix");
+  tcase_add_test(tc_rm, rm_matrix_is_null);
+  tcase_add_test(tc_rm, rm_1by1_square_matrix);
+  tcase_add_test(tc_rm, rm_2by4_matrix);
+  suite_add_tcase(s_b, tc_rm);
 
   return s_b;
 }
