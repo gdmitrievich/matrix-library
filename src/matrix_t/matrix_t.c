@@ -27,3 +27,8 @@ int s21_create_matrix(int rows, int columns, matrix_t* result) {
 
   return status_code;
 }
+
+int s21_is_matrix_params_valid(int rows, int columns, const matrix_t* matrix) {
+  return !(rows == 0 && columns == 0) && rows >= 0 && columns >= 0 &&
+         matrix != NULL;
+}
