@@ -1,6 +1,7 @@
 #include "matrix_t/matrix_t_test_helpers.h"
 
 #include <stdlib.h>
+#include <string.h>
 
 #include "../src/common.h"
 #include "../src/matrix_t.h"
@@ -31,4 +32,23 @@ matrix_operation_status_code_t s21_init_matrix(int rows, int columns,
   }
 
   return status_code;
+}
+
+matrix_operation_status_code_t s21_parse_elements_to_array_of_doubles(
+    int rows, int columns, const char *elements, double *elements_array) {
+  int idx = 0;
+  char *token = NULL;
+  char *elements_copy = s21_safe_malloc(strlen(elements) + 1);
+  if (elements_copy) {
+    memcpy(elements_copy, elements, strlen(elements) + 1);
+    token = strtok(elements_copy, " ");
+    while (token != NULL && idx < rows * columns) {
+      elements_array[idx++] = strtod(token, NULL);
+      token = strtok(NULL, " ");
+    }
+
+    free(elements_copy);
+  }
+
+  return (idx == rows * columns && token == NULL) ? OK : INVALID_MATRIX;
 }
