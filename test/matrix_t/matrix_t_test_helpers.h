@@ -22,4 +22,11 @@ void s21_copy_array_of_doubles_to_matrix(int rows, int columns,
                                          const double *elements_array,
                                          matrix_t *matrix);
 
+void s21_ck_assert_matrix_eq(const matrix_t *expected, const matrix_t *actual);
+
+int s21_two_doubles_equals_with_tolerance(double first, double second,
+                                          double epsilon);
+
+void s21_print_matrix_with_message(const char *message, const matrix_t *matrix);
+
 #endif  // MATRIX_T_TEST_HELPERS_H

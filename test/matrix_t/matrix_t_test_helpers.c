@@ -1,5 +1,6 @@
 #include "matrix_t/matrix_t_test_helpers.h"
 
+#include <check.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -59,6 +60,24 @@ void s21_copy_array_of_doubles_to_matrix(int rows, int columns,
   for (int i = 0; i < rows; ++i) {
     for (int j = 0; j < columns; ++j) {
       matrix->matrix[i][j] = elements_array[i * columns + j];
+    }
+  }
+}
+
+void s21_ck_assert_matrix_eq(const matrix_t *expected, const matrix_t *actual) {
+  ck_assert_int_eq(expected->rows, actual->rows);
+  ck_assert_int_eq(expected->columns, actual->columns);
+
+  for (int i = 0; i < expected->rows; ++i) {
+    for (int j = 0; j < expected->columns; ++j) {
+      const double TOLERANCE = 0.0000001;
+      if (!s21_two_doubles_equals_with_tolerance(
+              expected->matrix[i][j], actual->matrix[i][j], TOLERANCE)) {
+        s21_print_matrix_with_message("Expected matrix: ", expected);
+        s21_print_matrix_with_message("Actual matrix: ", actual);
+      }
+      ck_assert_double_eq_tol(expected->matrix[i][j], actual->matrix[i][j],
+                              TOLERANCE);
     }
   }
 }
