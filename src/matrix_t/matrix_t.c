@@ -4,6 +4,7 @@
 
 #include "common.h"
 #include "matrix_t/matrix_operation_status_code_t.h"
+#include "matrix_t/utils.h"
 
 int s21_create_matrix(int rows, int columns, matrix_t* result) {
   if (!s21_is_matrix_params_valid(rows, columns, result)) {
@@ -26,9 +27,4 @@ int s21_create_matrix(int rows, int columns, matrix_t* result) {
   }
 
   return status_code;
-}
-
-int s21_is_matrix_params_valid(int rows, int columns, const matrix_t* matrix) {
-  return !(rows == 0 && columns == 0) && rows >= 0 && columns >= 0 &&
-         matrix != NULL;
 }

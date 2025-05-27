@@ -14,6 +14,8 @@ typedef struct matrix_struct {
 
 int s21_create_matrix(int rows, int columns, matrix_t* result);
 
-int s21_is_matrix_params_valid(int rows, int columns, const matrix_t* matrix);
+void s21_remove_matrix(matrix_t* matrix);
+
+#include "matrix_t/utils.h"
 
 #endif  // MATRIX_T_H
