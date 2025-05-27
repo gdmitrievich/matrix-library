@@ -52,3 +52,13 @@ matrix_operation_status_code_t s21_parse_elements_to_array_of_doubles(
 
   return (idx == rows * columns && token == NULL) ? OK : INVALID_MATRIX;
 }
+
+void s21_copy_array_of_doubles_to_matrix(int rows, int columns,
+                                         const double *elements_array,
+                                         matrix_t *matrix) {
+  for (int i = 0; i < rows; ++i) {
+    for (int j = 0; j < columns; ++j) {
+      matrix->matrix[i][j] = elements_array[i * columns + j];
+    }
+  }
+}
