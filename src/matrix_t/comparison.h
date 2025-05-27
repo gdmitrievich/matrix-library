@@ -10,4 +10,7 @@
 
 int s21_eq_matrix(matrix_t *A, matrix_t *B);
 
+int s21_are_doubles_equal_with_precision(double first, double second,
+                                         double precision);
+
 #endif  // MATRIX_T_COMPARISON_H

@@ -7,6 +7,7 @@
 
 #include "../src/common.h"
 #include "../src/matrix_t.h"
+#include "../src/matrix_t/comparison.h"
 #include "../src/matrix_t/matrix_operation_status_code_t.h"
 
 matrix_operation_status_code_t s21_init_matrix(int rows, int columns,
@@ -71,21 +72,16 @@ void s21_ck_assert_matrix_eq(const matrix_t *expected, const matrix_t *actual) {
 
   for (int i = 0; i < expected->rows; ++i) {
     for (int j = 0; j < expected->columns; ++j) {
-      const double TOLERANCE = 0.0000001;
-      if (!s21_two_doubles_equals_with_tolerance(
-              expected->matrix[i][j], actual->matrix[i][j], TOLERANCE)) {
+      if (!s21_are_doubles_equal_with_precision(expected->matrix[i][j],
+                                                actual->matrix[i][j],
+                                                COMPARISON_PRECISION)) {
         s21_print_matrix_with_message("Expected matrix: ", expected);
         s21_print_matrix_with_message("Actual matrix: ", actual);
       }
       ck_assert_double_eq_tol(expected->matrix[i][j], actual->matrix[i][j],
-                              TOLERANCE);
+                              COMPARISON_PRECISION);
     }
   }
-}
-
-int s21_two_doubles_equals_with_tolerance(double first, double second,
-                                          double tolerance) {
-  return fabs(first - second) <= tolerance;
 }
 
 void s21_print_matrix_with_message(const char *message,

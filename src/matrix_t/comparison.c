@@ -1,5 +1,7 @@
 #include "comparison.h"
 
+#include <math.h>
+
 #include "matrix_t/utils.h"
 
 int s21_eq_matrix(matrix_t *A, matrix_t *B) {
@@ -21,4 +23,9 @@ int s21_eq_matrix(matrix_t *A, matrix_t *B) {
   }
 
   return status_code;
+}
+
+int s21_are_doubles_equal_with_precision(double first, double second,
+                                         double precision) {
+  return fabs(first - second) <= precision;
 }
