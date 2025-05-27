@@ -1,6 +1,7 @@
 #include "matrix_t.h"
 
 #include <stddef.h>
+#include <stdlib.h>
 
 #include "common.h"
 #include "matrix_t/matrix_operation_status_code_t.h"
@@ -27,4 +28,13 @@ int s21_create_matrix(int rows, int columns, matrix_t* result) {
   }
 
   return status_code;
+}
+
+void s21_remove_matrix(matrix_t* A) {
+  if (!A) {
+    return;
+  }
+
+  free(A->matrix);
+  *A = TEMPORARY_EMPTY_MATRIX_T;
 }
