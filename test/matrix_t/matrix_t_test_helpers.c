@@ -81,3 +81,8 @@ void s21_ck_assert_matrix_eq(const matrix_t *expected, const matrix_t *actual) {
     }
   }
 }
+
+int s21_two_doubles_equals_with_tolerance(double first, double second,
+                                          double tolerance) {
+  return fabs(first - second) <= tolerance;
+}
