@@ -1,7 +1,6 @@
 CC := gcc
 CFLAGS := -Wall -Werror -Wextra -std=c11
-LDLIBS := -lm -lcheck -lsubunit
-LDFLAGS = -L$(SRC_DIR) -l$(TARGET_NAME)
+LDLIBS := -lcheck -lsubunit -lm
 
 TARGET_NAME := s21_matrix
 TARGET := $(TARGET_NAME).a
@@ -32,7 +31,7 @@ all: $(TARGET) test # gcov_report
 
 # Builds static library for the s21_matrix project.
 $(TARGET): $(OBJS)
-	ar rcs lib$@ $^
+	ar rcs $@ $^
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(@D)
@@ -42,9 +41,9 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 test: $(TEST_BINS)
 	@for test_bin in $(TEST_BINS); do $$test_bin; done
 
-$(BIN_DIR)/%$(TEST_PREFIX): $(OBJ_DIR)/%$(TEST_PREFIX).o $(TEST_HELPER_OBJS) | $(TARGET)
+$(BIN_DIR)/%$(TEST_PREFIX): $(OBJ_DIR)/%$(TEST_PREFIX).o $(TEST_HELPER_OBJS) $(TARGET)
 	@mkdir -p $(@D)
-	$(CC) $^ $(LDFLAGS) $(LDLIBS) -o $@
+	$(CC) $^ $(LDLIBS) -o $@
 
 $(OBJ_DIR)/%.o: $(TEST_DIR)/%.c
 	@mkdir -p $(@D)
@@ -64,7 +63,7 @@ gcov_report: clean test
 
 # Cleans all generated artefacts.
 clean:
-	rm -rf $(OBJ_DIR) $(BIN_DIR) lib$(TARGET) $(GCOV_REPORT_DIR)
+	rm -rf $(OBJ_DIR) $(BIN_DIR) $(TARGET) $(GCOV_REPORT_DIR)
 
 # -------------------- Others --------------------
 
