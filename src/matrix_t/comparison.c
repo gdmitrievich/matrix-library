@@ -1,5 +1,7 @@
 #include "comparison.h"
 
+#include "matrix_t/utils.h"
+
 int s21_eq_matrix(matrix_t *A, matrix_t *B) {
   if (!s21_is_valid_matrix(A) || !s21_is_valid_matrix(B)) {
     return FAILURE;

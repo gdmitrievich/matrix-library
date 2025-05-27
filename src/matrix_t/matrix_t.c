@@ -8,7 +8,7 @@
 #include "matrix_t/utils.h"
 
 int s21_create_matrix(int rows, int columns, matrix_t* result) {
-  if (!s21_is_matrix_params_valid(rows, columns, result)) {
+  if (!s21_is_matrix_rows_and_columns_valid(rows, columns) || !result) {
     return INVALID_MATRIX;
   }
 
