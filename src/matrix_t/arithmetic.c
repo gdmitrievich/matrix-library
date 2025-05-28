@@ -73,3 +73,8 @@ int s21_mult_matrix(matrix_t *A, matrix_t *B, matrix_t *result) {
 
   return OK;
 }
+
+int s21_can_mult_matrices_with_their_orders(const matrix_t *first,
+                                            const matrix_t *second) {
+  return first->columns == second->rows;
+}
