@@ -16,6 +16,8 @@ int s21_create_matrix(int rows, int columns, matrix_t* result);
 
 void s21_remove_matrix(matrix_t* A);
 
+#include "matrix_t/arithmetic.h"
+#include "matrix_t/comparison.h"
 #include "matrix_t/utils.h"
 
 #endif  // MATRIX_T_H
