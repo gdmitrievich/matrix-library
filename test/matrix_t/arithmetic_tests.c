@@ -320,6 +320,103 @@ START_TEST(subm_1by3_with_1by2_returns_2) {
 }
 END_TEST
 
+START_TEST(mn_A_is_null_returns_1) {
+  matrix_t actual_result = EMPTY_MATRIX_T;
+
+  int status_code = s21_mult_number(NULL, 0, &actual_result);
+
+  ck_assert_int_eq(INVALID_MATRIX, status_code);
+}
+END_TEST
+
+START_TEST(mn_result_is_null_returns_1) {
+  matrix_t matrix = EMPTY_MATRIX_T;
+  s21_init_matrix(1, 2, "5 5", &matrix);
+
+  int status_code = s21_mult_number(&matrix, 0, NULL);
+
+  ck_assert_int_eq(INVALID_MATRIX, status_code);
+
+  s21_remove_matrix(&matrix);
+}
+END_TEST
+
+START_TEST(mn_1by1_returns_0) {
+  matrix_t matrix = EMPTY_MATRIX_T;
+  s21_init_matrix(1, 1, "5.5", &matrix);
+  double number = 2;
+  matrix_t expected_result = EMPTY_MATRIX_T;
+  s21_init_matrix(1, 1, "11", &expected_result);
+  matrix_t actual_result = EMPTY_MATRIX_T;
+
+  int status_code = s21_mult_number(&matrix, number, &actual_result);
+
+  ck_assert_int_eq(OK, status_code);
+  s21_ck_assert_matrix_eq(&expected_result, &actual_result);
+
+  s21_remove_matrix(&matrix);
+  s21_remove_matrix(&expected_result);
+  s21_remove_matrix(&actual_result);
+}
+END_TEST
+
+START_TEST(mn_3by3_returns_0) {
+  matrix_t matrix = EMPTY_MATRIX_T;
+  s21_init_matrix(3, 3, "1 2 3 4 5 6 7 8 9", &matrix);
+  double number = 2.5;
+  matrix_t expected_result = EMPTY_MATRIX_T;
+  s21_init_matrix(3, 3, "2.5 5 7.5 10 12.5 15 17.5 20 22.5", &expected_result);
+  matrix_t actual_result = EMPTY_MATRIX_T;
+
+  int status_code = s21_mult_number(&matrix, number, &actual_result);
+
+  ck_assert_int_eq(OK, status_code);
+  s21_ck_assert_matrix_eq(&expected_result, &actual_result);
+
+  s21_remove_matrix(&matrix);
+  s21_remove_matrix(&expected_result);
+  s21_remove_matrix(&actual_result);
+}
+END_TEST
+
+START_TEST(mn_2by3_returns_0) {
+  matrix_t matrix = EMPTY_MATRIX_T;
+  s21_init_matrix(2, 3, "1 2 3 4 5 6", &matrix);
+  double number = 2;
+  matrix_t expected_result = EMPTY_MATRIX_T;
+  s21_init_matrix(2, 3, "2 4 6 8 10 12", &expected_result);
+  matrix_t actual_result = EMPTY_MATRIX_T;
+
+  int status_code = s21_mult_number(&matrix, number, &actual_result);
+
+  ck_assert_int_eq(OK, status_code);
+  s21_ck_assert_matrix_eq(&expected_result, &actual_result);
+
+  s21_remove_matrix(&matrix);
+  s21_remove_matrix(&expected_result);
+  s21_remove_matrix(&actual_result);
+}
+END_TEST
+
+START_TEST(mn_3by2_returns_0) {
+  matrix_t matrix = EMPTY_MATRIX_T;
+  s21_init_matrix(3, 2, "1 2 3 4 5 6", &matrix);
+  double number = 2;
+  matrix_t expected_result = EMPTY_MATRIX_T;
+  s21_init_matrix(3, 2, "2 4 6 8 10 12", &expected_result);
+  matrix_t actual_result = EMPTY_MATRIX_T;
+
+  int status_code = s21_mult_number(&matrix, number, &actual_result);
+
+  ck_assert_int_eq(OK, status_code);
+  s21_ck_assert_matrix_eq(&expected_result, &actual_result);
+
+  s21_remove_matrix(&matrix);
+  s21_remove_matrix(&expected_result);
+  s21_remove_matrix(&actual_result);
+}
+END_TEST
+
 Suite* arithmetic_suite() {
   Suite* s_a = suite_create("Arithmetic");
 
@@ -346,6 +443,15 @@ Suite* arithmetic_suite() {
   tcase_add_test(tc_subm, subm_3by2_with_2by3_returns_2);
   tcase_add_test(tc_subm, subm_1by3_with_1by2_returns_2);
   suite_add_tcase(s_a, tc_subm);
+
+  TCase* tc_mn = tcase_create("s21_mult_number");
+  tcase_add_test(tc_mn, mn_A_is_null_returns_1);
+  tcase_add_test(tc_mn, mn_result_is_null_returns_1);
+  tcase_add_test(tc_mn, mn_1by1_returns_0);
+  tcase_add_test(tc_mn, mn_3by3_returns_0);
+  tcase_add_test(tc_mn, mn_2by3_returns_0);
+  tcase_add_test(tc_mn, mn_3by2_returns_0);
+  suite_add_tcase(s_a, tc_mn);
 
   return s_a;
 }
