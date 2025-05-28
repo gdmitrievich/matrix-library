@@ -5,4 +5,6 @@
 
 int s21_sum_matrix(matrix_t *A, matrix_t *B, matrix_t *result);
 
+int s21_sub_matrix(matrix_t *A, matrix_t *B, matrix_t *result);
+
 #endif  // MATRIX_T_ARITHMETIC_H
