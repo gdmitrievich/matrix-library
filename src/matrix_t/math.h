@@ -15,4 +15,6 @@ int s21_calc_minor(int row, int column, const matrix_t *matrix, double *minor);
 void s21_crop_matrix_by_one_order(int row, int column, const matrix_t *matrix,
                                   matrix_t *result);
 
+int s21_determinant(matrix_t *A, double *result);
+
 #endif  // MATRIX_T_MATH_H

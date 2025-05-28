@@ -86,3 +86,24 @@ void s21_crop_matrix_by_one_order(int row, int column, const matrix_t *matrix,
     }
   }
 }
+
+int s21_determinant(matrix_t *A, double *result) {
+  if (!s21_is_matrix_valid(A) || !result) {
+    return INVALID_MATRIX;
+  } else if (!s21_is_square_matrix(A)) {
+    return COMPUTATION_ERROR;
+  }
+
+  if (A->rows == 1) {
+    *result = A->matrix[0][0];
+  } else {
+    *result = 0;
+    for (int i = 0; i < A->columns; ++i) {
+      double complement = 0;
+      s21_calc_complement(0, i, A, &complement);
+      *result += A->matrix[0][i] * complement;
+    }
+  }
+
+  return OK;
+}
