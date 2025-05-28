@@ -2,6 +2,7 @@
 
 #include "matrix_operation_status_code_t.h"
 #include "matrix_t.h"
+#include "matrix_t/utils.h"
 
 int s21_transpose(matrix_t *A, matrix_t *result) {
   if (!s21_is_matrix_valid(A) || !result) {

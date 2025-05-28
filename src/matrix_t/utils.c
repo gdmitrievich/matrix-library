@@ -15,3 +15,7 @@ int s21_are_orders_of_matrixes_equal(const matrix_t *first,
                                      const matrix_t *second) {
   return first->rows == second->rows && first->columns == second->columns;
 }
+
+int s21_is_square_matrix(const matrix_t *matrix) {
+  return matrix->rows == matrix->columns;
+}
