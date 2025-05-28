@@ -18,6 +18,7 @@ void s21_remove_matrix(matrix_t* A);
 
 #include "matrix_t/arithmetic.h"
 #include "matrix_t/comparison.h"
+#include "matrix_t/math.h"
 #include "matrix_t/utils.h"
 
 #endif  // MATRIX_T_H
