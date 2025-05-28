@@ -73,3 +73,16 @@ int s21_calc_minor(int row, int column, const matrix_t *matrix, double *minor) {
 
   return OK;
 }
+
+void s21_crop_matrix_by_one_order(int row, int column, const matrix_t *matrix,
+                                  matrix_t *result) {
+  s21_create_matrix(matrix->rows - 1, matrix->columns - 1, result);
+  for (int i = 0, k = 0; i < matrix->rows; ++i) {
+    if (i != row) {
+      for (int j = 0, l = 0; j < matrix->columns; ++j) {
+        if (j != column) result->matrix[k][l++] = matrix->matrix[i][j];
+      }
+      ++k;
+    }
+  }
+}

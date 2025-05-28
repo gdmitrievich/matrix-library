@@ -12,4 +12,7 @@ int s21_calc_complement(int row, int column, const matrix_t *matrix,
 
 int s21_calc_minor(int row, int column, const matrix_t *matrix, double *minor);
 
+void s21_crop_matrix_by_one_order(int row, int column, const matrix_t *matrix,
+                                  matrix_t *result);
+
 #endif  // MATRIX_T_MATH_H
