@@ -5,4 +5,6 @@
 
 int s21_transpose(matrix_t *A, matrix_t *result);
 
+int s21_calc_complements(matrix_t *A, matrix_t *result);
+
 #endif  // MATRIX_T_MATH_H
