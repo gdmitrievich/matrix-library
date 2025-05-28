@@ -52,3 +52,24 @@ int s21_mult_number(matrix_t *A, double number, matrix_t *result) {
 
   return OK;
 }
+
+int s21_mult_matrix(matrix_t *A, matrix_t *B, matrix_t *result) {
+  if (!s21_is_matrix_valid(A) || !s21_is_matrix_valid(B) || !result) {
+    return INVALID_MATRIX;
+  } else if (!s21_can_mult_matrices_with_their_orders(A, B)) {
+    return COMPUTATION_ERROR;
+  }
+
+  s21_create_matrix(A->rows, B->columns, result);
+  for (int i = 0; i < A->rows; ++i) {
+    for (int j = 0; j < B->columns; ++j) {
+      double sum = 0;
+      for (int k = 0; k < B->rows; ++k) {
+        sum += A->matrix[i][k] * B->matrix[k][j];
+      }
+      result->matrix[i][j] = sum;
+    }
+  }
+
+  return OK;
+}
