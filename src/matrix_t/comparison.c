@@ -5,7 +5,7 @@
 #include "matrix_t/utils.h"
 
 int s21_eq_matrix(matrix_t *A, matrix_t *B) {
-  if (!s21_is_valid_matrix(A) || !s21_is_valid_matrix(B) ||
+  if (!s21_is_matrix_valid(A) || !s21_is_matrix_valid(B) ||
       !s21_are_orders_of_matrixes_equal(A, B)) {
     return FAILURE;
   }

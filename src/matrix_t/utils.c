@@ -2,7 +2,7 @@
 
 #include "matrix_t.h"
 
-int s21_is_valid_matrix(const matrix_t* matrix) {
+int s21_is_matrix_valid(const matrix_t *matrix) {
   return matrix && matrix->matrix &&
          s21_is_matrix_rows_and_columns_valid(matrix->rows, matrix->columns);
 }

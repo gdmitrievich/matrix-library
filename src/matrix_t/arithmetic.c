@@ -5,7 +5,7 @@
 #include "matrix_t/utils.h"
 
 int s21_sum_matrix(matrix_t *A, matrix_t *B, matrix_t *result) {
-  if (!s21_is_valid_matrix(A) || !s21_is_valid_matrix(B) || !result) {
+  if (!s21_is_matrix_valid(A) || !s21_is_matrix_valid(B) || !result) {
     return INVALID_MATRIX;
   } else if (!s21_are_orders_of_matrixes_equal(A, B)) {
     return COMPUTATION_ERROR;
