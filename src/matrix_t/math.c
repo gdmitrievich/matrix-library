@@ -54,3 +54,22 @@ int s21_calc_complement(int row, int column, const matrix_t *matrix,
 
   return OK;
 }
+
+int s21_calc_minor(int row, int column, const matrix_t *matrix, double *minor) {
+  if (!s21_is_matrix_valid(matrix)) {
+    return INVALID_MATRIX;
+  } else if (!s21_is_square_matrix(matrix)) {
+    return COMPUTATION_ERROR;
+  }
+
+  if (matrix->rows == 1) {
+    *minor = matrix->matrix[0][0];
+  } else {
+    matrix_t cropped_matrix = EMPTY_MATRIX_T;
+    s21_crop_matrix_by_one_order(row, column, matrix, &cropped_matrix);
+    s21_determinant(&cropped_matrix, minor);
+    s21_remove_matrix(&cropped_matrix);
+  }
+
+  return OK;
+}
