@@ -2,6 +2,7 @@
 
 #include "matrix_operation_status_code_t.h"
 #include "matrix_t.h"
+#include "matrix_t/utils.h"
 
 int s21_sum_matrix(matrix_t *A, matrix_t *B, matrix_t *result) {
   if (!s21_is_valid_matrix(A) || !s21_is_valid_matrix(B) || !result) {
