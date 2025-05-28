@@ -1,5 +1,7 @@
 #include "math.h"
 
+#include <math.h>
+
 #include "matrix_operation_status_code_t.h"
 #include "matrix_t.h"
 #include "matrix_t/utils.h"
@@ -34,6 +36,21 @@ int s21_calc_complements(matrix_t *A, matrix_t *result) {
       result->matrix[i][j] = complement;
     }
   }
+
+  return OK;
+}
+
+int s21_calc_complement(int row, int column, const matrix_t *matrix,
+                        double *complement) {
+  if (!s21_is_matrix_valid(matrix)) {
+    return INVALID_MATRIX;
+  } else if (!s21_is_square_matrix(matrix)) {
+    return COMPUTATION_ERROR;
+  }
+
+  double minor = 0;
+  s21_calc_minor(row, column, matrix, &minor);
+  *complement = pow(-1, row + 1 + column + 1) * minor;
 
   return OK;
 }
