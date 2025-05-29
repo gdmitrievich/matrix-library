@@ -26,7 +26,6 @@ TEST_HELPER_OBJS := $(patsubst $(TEST_DIR)/%.c,$(OBJ_DIR)/%.o,$(TEST_HELPER_SRCS
 
 .PHONY: all $(TARGET) test gcov_report clean ci correct_code_style memory_check
 
-# TODO: Fix gcov_report error after running it as a dependency of 'all' target.
 all: $(TARGET) test # gcov_report
 
 # Builds static library for the s21_matrix project.
