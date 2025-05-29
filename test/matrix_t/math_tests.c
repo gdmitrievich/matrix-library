@@ -347,6 +347,141 @@ START_TEST(d_3by2_returns_2) {
 }
 END_TEST
 
+START_TEST(im_A_is_null_returns_1) {
+  matrix_t actual_result = EMPTY_MATRIX_T;
+
+  int status_code = s21_inverse_matrix(NULL, &actual_result);
+
+  ck_assert_int_eq(INVALID_MATRIX, status_code);
+}
+END_TEST
+
+START_TEST(im_result_matrix_is_null_returns_1) {
+  matrix_t matrix = EMPTY_MATRIX_T;
+  s21_init_matrix(1, 2, "5 5", &matrix);
+
+  int status_code = s21_inverse_matrix(&matrix, NULL);
+
+  ck_assert_int_eq(INVALID_MATRIX, status_code);
+
+  s21_remove_matrix(&matrix);
+}
+END_TEST
+
+START_TEST(im_1by1_returns_0) {
+  matrix_t matrix = EMPTY_MATRIX_T;
+  s21_init_matrix(1, 1, "5", &matrix);
+  matrix_t expected_result = EMPTY_MATRIX_T;
+  s21_init_matrix(1, 1, "0.2", &expected_result);
+  matrix_t actual_result = EMPTY_MATRIX_T;
+
+  int status_code = s21_inverse_matrix(&matrix, &actual_result);
+
+  ck_assert_int_eq(OK, status_code);
+  s21_ck_assert_matrix_eq(&expected_result, &actual_result);
+
+  s21_remove_matrix(&matrix);
+  s21_remove_matrix(&expected_result);
+  s21_remove_matrix(&actual_result);
+}
+END_TEST
+
+START_TEST(im_2by2_returns_0) {
+  matrix_t matrix = EMPTY_MATRIX_T;
+  s21_init_matrix(2, 2, "-2 -4 1 6", &matrix);
+  matrix_t expected_result = EMPTY_MATRIX_T;
+  s21_init_matrix(2, 2, "-0.75 -0.5 0.125 0.25", &expected_result);
+  matrix_t actual_result = EMPTY_MATRIX_T;
+
+  int status_code = s21_inverse_matrix(&matrix, &actual_result);
+
+  ck_assert_int_eq(OK, status_code);
+  s21_ck_assert_matrix_eq(&expected_result, &actual_result);
+
+  s21_remove_matrix(&matrix);
+  s21_remove_matrix(&expected_result);
+  s21_remove_matrix(&actual_result);
+}
+END_TEST
+
+START_TEST(im_3by3_returns_0) {
+  matrix_t matrix = EMPTY_MATRIX_T;
+  s21_init_matrix(3, 3, "2 5 7 6 3 4 5 -2 -3", &matrix);
+  matrix_t expected_result = EMPTY_MATRIX_T;
+  s21_init_matrix(3, 3, "1 -1 1 -38 41 -34 27 -29 24", &expected_result);
+  matrix_t actual_result = EMPTY_MATRIX_T;
+
+  int status_code = s21_inverse_matrix(&matrix, &actual_result);
+
+  ck_assert_int_eq(OK, status_code);
+  s21_ck_assert_matrix_eq(&expected_result, &actual_result);
+
+  s21_remove_matrix(&matrix);
+  s21_remove_matrix(&expected_result);
+  s21_remove_matrix(&actual_result);
+}
+END_TEST
+
+START_TEST(im_4by4_returns_0) {
+  matrix_t matrix = EMPTY_MATRIX_T;
+  s21_init_matrix(4, 4, "1 2 5 2 6 -3 -2 1 -2 -5 1 -2 7 -1 1 2", &matrix);
+  matrix_t actual_result = EMPTY_MATRIX_T;
+
+  int status_code = s21_inverse_matrix(&matrix, &actual_result);
+
+  ck_assert_int_eq(OK, status_code);
+  matrix_t mult = EMPTY_MATRIX_T;
+  s21_mult_matrix(&matrix, &actual_result, &mult);
+  matrix_t identity_matrix = EMPTY_MATRIX_T;
+  s21_init_matrix(4, 4, "1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1", &identity_matrix);
+  s21_ck_assert_matrix_eq(&identity_matrix, &mult);
+
+  s21_remove_matrix(&matrix);
+  s21_remove_matrix(&actual_result);
+  s21_remove_matrix(&mult);
+  s21_remove_matrix(&identity_matrix);
+}
+END_TEST
+
+START_TEST(im_determinant_eq_zero_returns_2) {
+  matrix_t matrix = EMPTY_MATRIX_T;
+  s21_init_matrix(3, 3, "1 2 3 2 4 6 3 6 9", &matrix);
+  matrix_t actual_result = EMPTY_MATRIX_T;
+
+  int status_code = s21_inverse_matrix(&matrix, &actual_result);
+
+  ck_assert_int_eq(COMPUTATION_ERROR, status_code);
+
+  s21_remove_matrix(&matrix);
+}
+END_TEST
+
+START_TEST(im_2by3_returns_2) {
+  matrix_t matrix = EMPTY_MATRIX_T;
+  s21_init_matrix(2, 3, "1 2 3 0 4 2", &matrix);
+  matrix_t actual_result = EMPTY_MATRIX_T;
+
+  int status_code = s21_inverse_matrix(&matrix, &actual_result);
+
+  ck_assert_int_eq(COMPUTATION_ERROR, status_code);
+
+  s21_remove_matrix(&matrix);
+}
+END_TEST
+
+START_TEST(im_3by2_returns_2) {
+  matrix_t matrix = EMPTY_MATRIX_T;
+  s21_init_matrix(3, 2, "1 2 3 0 4 2", &matrix);
+  matrix_t actual_result = EMPTY_MATRIX_T;
+
+  int status_code = s21_inverse_matrix(&matrix, &actual_result);
+
+  ck_assert_int_eq(COMPUTATION_ERROR, status_code);
+
+  s21_remove_matrix(&matrix);
+}
+END_TEST
+
 Suite* math_suite() {
   Suite* s_m = suite_create("Math");
 
@@ -381,6 +516,18 @@ Suite* math_suite() {
   tcase_add_test(tc_d, d_2by3_returns_2);
   tcase_add_test(tc_d, d_3by2_returns_2);
   suite_add_tcase(s_m, tc_d);
+
+  TCase* tc_im = tcase_create("s21_inverse_matrix");
+  tcase_add_test(tc_im, im_A_is_null_returns_1);
+  tcase_add_test(tc_im, im_result_matrix_is_null_returns_1);
+  tcase_add_test(tc_im, im_1by1_returns_0);
+  tcase_add_test(tc_im, im_2by2_returns_0);
+  tcase_add_test(tc_im, im_3by3_returns_0);
+  tcase_add_test(tc_im, im_4by4_returns_0);
+  tcase_add_test(tc_im, im_determinant_eq_zero_returns_2);
+  tcase_add_test(tc_im, im_2by3_returns_2);
+  tcase_add_test(tc_im, im_3by2_returns_2);
+  suite_add_tcase(s_m, tc_im);
 
   return s_m;
 }
