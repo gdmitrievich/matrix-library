@@ -17,4 +17,6 @@ void s21_crop_matrix_by_one_order(int row, int column, const matrix_t *matrix,
 
 int s21_determinant(matrix_t *A, double *result);
 
+int s21_inverse_matrix(matrix_t *A, matrix_t *result);
+
 #endif  // MATRIX_T_MATH_H

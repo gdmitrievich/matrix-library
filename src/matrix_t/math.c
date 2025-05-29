@@ -107,3 +107,35 @@ int s21_determinant(matrix_t *A, double *result) {
 
   return OK;
 }
+
+int s21_inverse_matrix(matrix_t *A, matrix_t *result) {
+  if (!s21_is_matrix_valid(A) || !result) {
+    return INVALID_MATRIX;
+  } else if (!s21_is_square_matrix(A)) {
+    return COMPUTATION_ERROR;
+  }
+
+  matrix_operation_status_code_t status_code = OK;
+  double determinant = 0;
+  s21_determinant(A, &determinant);
+  if (determinant != 0) {
+    if (A->rows != 1) {
+      matrix_t complement_matrix = EMPTY_MATRIX_T;
+      s21_calc_complements(A, &complement_matrix);
+      matrix_t transpose_matrix = EMPTY_MATRIX_T;
+      s21_transpose(&complement_matrix, &transpose_matrix);
+      s21_mult_number(&transpose_matrix, 1 / determinant, result);
+
+      s21_remove_matrix(&complement_matrix);
+      s21_remove_matrix(&transpose_matrix);
+    } else {
+      s21_create_matrix(1, 1, result);
+      result->matrix[0][0] = 1 / A->matrix[0][0];
+    }
+
+  } else {
+    status_code = COMPUTATION_ERROR;
+  }
+
+  return status_code;
+}
