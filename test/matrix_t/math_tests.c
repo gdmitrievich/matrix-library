@@ -2,6 +2,7 @@
 #include <stdlib.h>  // For exit status.
 
 #include "../src/matrix_t.h"
+#include "../src/matrix_t/comparison.h"
 #include "../src/matrix_t/math.h"
 #include "../src/matrix_t/matrix_operation_status_code_t.h"
 #include "matrix_t/matrix_t_test_helpers.h"
@@ -222,6 +223,130 @@ START_TEST(cc_3by2_returns_2) {
 }
 END_TEST
 
+START_TEST(d_A_is_null_returns_1) {
+  double actual_result = 0;
+
+  int status_code = s21_determinant(NULL, &actual_result);
+
+  ck_assert_int_eq(INVALID_MATRIX, status_code);
+}
+END_TEST
+
+START_TEST(d_result_matrix_is_null_returns_1) {
+  matrix_t matrix = EMPTY_MATRIX_T;
+  s21_init_matrix(1, 2, "5 5", &matrix);
+
+  int status_code = s21_determinant(&matrix, NULL);
+
+  ck_assert_int_eq(INVALID_MATRIX, status_code);
+
+  s21_remove_matrix(&matrix);
+}
+END_TEST
+
+START_TEST(d_1by1_returns_0) {
+  matrix_t matrix = EMPTY_MATRIX_T;
+  s21_init_matrix(1, 1, "5.5", &matrix);
+  double expected_result = 5.5;
+  double actual_result = 0;
+
+  int status_code = s21_determinant(&matrix, &actual_result);
+
+  ck_assert_int_eq(OK, status_code);
+  ck_assert_double_eq_tol(expected_result, actual_result, COMPARISON_PRECISION);
+
+  s21_remove_matrix(&matrix);
+}
+END_TEST
+
+START_TEST(d_2by2_returns_0) {
+  matrix_t matrix = EMPTY_MATRIX_T;
+  s21_init_matrix(2, 2, "-3 -2 5 -8", &matrix);
+  double expected_result = 34;
+  double actual_result = 0;
+
+  int status_code = s21_determinant(&matrix, &actual_result);
+
+  ck_assert_int_eq(OK, status_code);
+  ck_assert_double_eq_tol(expected_result, actual_result, COMPARISON_PRECISION);
+
+  s21_remove_matrix(&matrix);
+}
+END_TEST
+
+START_TEST(d_3by3_returns_0) {
+  matrix_t matrix = EMPTY_MATRIX_T;
+  s21_init_matrix(3, 3, "1 2 3 4 5 6 7 8 9", &matrix);
+  double expected_result = 0;
+  double actual_result = 0;
+
+  int status_code = s21_determinant(&matrix, &actual_result);
+
+  ck_assert_int_eq(OK, status_code);
+  ck_assert_double_eq_tol(expected_result, actual_result, COMPARISON_PRECISION);
+
+  s21_remove_matrix(&matrix);
+}
+END_TEST
+
+START_TEST(d_3by3_diagonal_matrix_returns_0) {
+  matrix_t matrix = EMPTY_MATRIX_T;
+  s21_init_matrix(3, 3, "5.3 0 0 0 3.5 0 0 0 7.5", &matrix);
+  double expected_result = 139.125;
+  double actual_result = 0;
+
+  int status_code = s21_determinant(&matrix, &actual_result);
+
+  ck_assert_int_eq(OK, status_code);
+  ck_assert_double_eq_tol(expected_result, actual_result, COMPARISON_PRECISION);
+
+  s21_remove_matrix(&matrix);
+}
+END_TEST
+
+START_TEST(d_4by4_returns_0) {
+  matrix_t matrix = EMPTY_MATRIX_T;
+  s21_init_matrix(
+      4, 4, "1.52 2 5 2 6 -3.825 -2.23 1 -2.252 -5 1 -2.16 7.22 -1.64 1 2",
+      &matrix);
+  double expected_result = 139.43291776;
+  double actual_result = 0;
+
+  int status_code = s21_determinant(&matrix, &actual_result);
+
+  ck_assert_int_eq(OK, status_code);
+  ck_assert_double_eq_tol(expected_result, actual_result, COMPARISON_PRECISION);
+
+  s21_remove_matrix(&matrix);
+}
+END_TEST
+
+START_TEST(d_2by3_returns_2) {
+  matrix_t matrix = EMPTY_MATRIX_T;
+  s21_init_matrix(2, 3, "1 2 3 0 4 2", &matrix);
+  double actual_result = 0;
+
+  int status_code = s21_determinant(&matrix, &actual_result);
+
+  ck_assert_int_eq(COMPUTATION_ERROR, status_code);
+
+  s21_remove_matrix(&matrix);
+}
+END_TEST
+
+START_TEST(d_3by2_returns_2) {
+  matrix_t matrix = EMPTY_MATRIX_T;
+  s21_init_matrix(3, 2, "1 2 3 0 4 2", &matrix);
+  double actual_result = 0;
+
+  int status_code = s21_determinant(&matrix, &actual_result);
+
+  ck_assert_int_eq(COMPUTATION_ERROR, status_code);
+
+  s21_remove_matrix(&matrix);
+}
+END_TEST
+
 Suite* math_suite() {
   Suite* s_m = suite_create("Math");
 
@@ -244,6 +369,18 @@ Suite* math_suite() {
   tcase_add_test(tc_cc, cc_2by3_returns_2);
   tcase_add_test(tc_cc, cc_3by2_returns_2);
   suite_add_tcase(s_m, tc_cc);
+
+  TCase* tc_d = tcase_create("s21_determinant");
+  tcase_add_test(tc_d, d_A_is_null_returns_1);
+  tcase_add_test(tc_d, d_result_matrix_is_null_returns_1);
+  tcase_add_test(tc_d, d_1by1_returns_0);
+  tcase_add_test(tc_d, d_2by2_returns_0);
+  tcase_add_test(tc_d, d_3by3_returns_0);
+  tcase_add_test(tc_d, d_3by3_diagonal_matrix_returns_0);
+  tcase_add_test(tc_d, d_4by4_returns_0);
+  tcase_add_test(tc_d, d_2by3_returns_2);
+  tcase_add_test(tc_d, d_3by2_returns_2);
+  suite_add_tcase(s_m, tc_d);
 
   return s_m;
 }
